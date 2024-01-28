@@ -1,1 +1,2 @@
 command
+hi from GitHub!
