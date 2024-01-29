@@ -2,4 +2,4 @@ hi
 brouh
 !cmd tree
 !hello
-!powershell powershell -command "& { Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show('Your Message', 'Title', [System.Windows.MessageBoxButton]::OK, [System.Windows.MessageBoxImage]::Information) }"
+!powershell tree | ForEach-Object { Write-Host $_ -ForegroundColor Green }
