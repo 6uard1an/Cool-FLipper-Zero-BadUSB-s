@@ -1,3 +1,4 @@
 hi
 brouh
-!cmd
+!cmd tree
+!hello
