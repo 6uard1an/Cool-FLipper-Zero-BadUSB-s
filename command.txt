@@ -1,5 +1,38 @@
-hi
-brouh
-!cmd tree
-!hello
+commands start with `!` at the start of the line.
+commands run line-by-line, top-to-bottom.
+any line not starting with `!` is considered a comment
+
+currently there are 3 commands: `!cmd`, `!powershell`, `!msgbox`.
+each one executes in its own respective invironment.
+they can all take paramaters to define what they do, but are limited to the same line.
+here are some examples:
+
+!cmd ipconfig
 !powershell tree | ForEach-Object { Write-Host $_ -ForegroundColor Green }
+!msgbox $msgBoxTitle = "Error"; $msgBoxMessage = "Error: system32 not found."; $msgBoxButton = "OK"; $msgBoxIcon = "Warning";
+
+if you put a non existing command in here, you might recieve a discord notification (from the webhook) telling you the command doesnt exist.
+example:
+
+!hello
+//Unknown Command: !hello
+
+the script will ignore the non existing command.
+
+
+
+
+
+
+
+
+
+
+
+
+||||||||||||||||||||||||||||||||||
+       PARAMS FOR !msgbox:        
+#   $msgBoxTitle = "YOUR_TITLE";
+#   $msgBoxMessage = "YOUR_MESSAGE";
+#   $msgBoxButton = "YOUR_BUTTONS"; //buttons include: "OK"/"OKCancel"/"YesNo"/"YesNoCancel"/"AbortRetryIgnore"/"RetryCancel"
+#   $msgBoxIcon = "YOUR_ICON"; //icons include: "None"/"Information"/"Warning"/"Error"/Critical"/"Question"
